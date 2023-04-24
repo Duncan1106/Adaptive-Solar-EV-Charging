@@ -29,7 +29,7 @@ def adaptive_charging(max_charging_power: float, actual_charging_power: float):
     status = f"Available Power: {round (max_charging_power)}W, Amps = {charging_amps}A, Charging: {round (actual_charging_power)}W"
     return status, sleep_time, sleep_str
 
-def slow_charging(amps: int):
+def slow_charging(amps: int, grid_to_home: float, max_charging_power: float, actual_charging_power: float):
     sleep_time = 10
     sleep_str = "10"
     set_charging(0)
@@ -39,7 +39,7 @@ def slow_charging(amps: int):
     status = f"Grid Power: {round (grid_to_home)}W and PV Power: {round (max_charging_power)}, Amps = 6A, Charging: {round (actual_charging_power)}W"
     return log_status, sleep_time, sleep_str
 
-def no_charging():
+def no_charging(grid_to_home: float):
     sleep_time = 10
     sleep_str= "10"
     set_charging(1)
