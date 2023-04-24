@@ -29,11 +29,11 @@ This script allows you to charge your electric vehicle with solar power in an in
 
  # Contributing
   Contributions to this project are welcome. To contribute, follow these steps:
-  
-    - Fork this repository.
-    - Create a new branch.
-    - Make your changes.
-    - Test your changes.
-    - Submit a pull request.
-License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+    - Fork this repository
+    - Create a new branch
+    - Make your changes
+    - Test your changes
+    - Submit a pull request
+
+ # License
+  This project is licensed under the MIT License - see the LICENSE.md file for details.
