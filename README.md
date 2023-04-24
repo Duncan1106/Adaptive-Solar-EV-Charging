@@ -44,4 +44,4 @@ This script allows you to charge your electric vehicle with solar power in an in
    - Submit a pull request
 
  ## License
-  This project is licensed under the MIT License - see the LICENSE.md file for details.
+  This project is licensed under the MIT License - see the LICENSE file for details.
