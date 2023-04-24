@@ -10,9 +10,11 @@ This script allows you to charge your electric vehicle with solar power in an in
    - An API that provides solar and home energy data
  ## Installation
   - Clone the repository using the following command:
+  
   ```
    git clone https://github.com/Duncan1106/ev-charging-script.git
   ```
+  
   - Install the required packages using pip:
   ``` 
   pip install -r requirements.txt
@@ -30,11 +32,11 @@ This script allows you to charge your electric vehicle with solar power in an in
  ## Contributing
   Contributions to this project are welcome. To contribute, follow these steps:
   
-    1. Fork this repository
-    2. Create a new branch
-    3. Make your changes
-    4. Test your changes
-    5. Submit a pull request
+   - Fork this repository
+   - Create a new branch
+   - Make your changes
+   - Test your changes
+   - Submit a pull request
 
  ## License
   This project is licensed under the MIT License - see the LICENSE.md file for details.
