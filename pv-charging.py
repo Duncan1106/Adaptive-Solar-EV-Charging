@@ -27,7 +27,7 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
     """
     if charging_style == 0:
         if max_charging_power >=800 and grid_to_home <=1600:
-            return adaptive_charging()
+            return adaptive_charging(max_charging_power, actual_charging_power)
         else:
             if 500 <= max_charging_power < 800 and grid_to_home < 1600:
                 return slow_charging(7)
@@ -36,7 +36,7 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
 
     elif charging_style == 1:
         if max_charging_power >= 800 and grid_to_home <= 800:
-            return adaptive_charging()
+            return adaptive_charging(max_charging_power, actual_charging_power)
         else:
             if 500 <= max_charging_power < 800 and grid_to_home < 800:
                 retrun slow_charging(6)

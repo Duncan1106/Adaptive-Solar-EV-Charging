@@ -4,13 +4,13 @@ from count_stops import counter
 from set_chargings import set_charging
 
 
-def adaptive_charging():
-	# Define charging steps in amps and power (in watts)
+def adaptive_charging(max_charging_power: float, actual_charging_power: float):
+    # Define charging steps in amps and power (in watts)
     charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
     # set amps to lowest value possible
     charging_amps = 6
     # set charging to allow
-	set_charging(0)
+    set_charging(0)
     for amps, power in charging_steps.items():
         if power <= max_charging_power:
             charging_amps = amps
@@ -26,7 +26,7 @@ def adaptive_charging():
     return status, sleep_time, sleep_str
 
 def slow_charging(amps: int):
-	sleep_time = 10
+    sleep_time = 10
     sleep_str = "10"
     set_charging(0)
     set_amp(amps)
@@ -36,8 +36,8 @@ def slow_charging(amps: int):
     return log_status, sleep_time, sleep_str
 
 def no_charging():
-	sleep_time = 10
-	sleep_str= "10"
+    sleep_time = 10
+    sleep_str= "10"
     set_charging(1)
     counter()
     log_status = f"Stopping Charging because too much power is drawn from the grid: {grid_to_home}W"
