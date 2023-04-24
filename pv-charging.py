@@ -24,27 +24,21 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
         - sleep_str (str): a string representation of the sleep time, in the format of mm
     """
     if charging_style == 0:
-        if max_charging_power >=800 and grid_to_home <=1600:
-            return adaptive_charging(max_charging_power, actual_charging_power)
-        else:
-            if 500 <= max_charging_power < 800 and grid_to_home < 1600:
-                return slow_charging(7)
-            else:
-                return no_charging()
-
+        grid_to_home_ref = 1600
+        amps_slow = 7
     elif charging_style == 1:
-        if max_charging_power >= 800 and grid_to_home <= 800:
-            return adaptive_charging(max_charging_power, actual_charging_power)
-        else:
-            if 500 <= max_charging_power < 800 and grid_to_home < 800:
-                retrun slow_charging(6)
-
-            else:
-                return no_charging()
-
+        grid_to_home_ref = 800
+        amps_slow = 6
     else:
         raise ValueError("The provided charging style is invalid, there are only two style: 0 -> aggressive and 1 -> conservative; default´is conservative")            
 
+    if max_charging_power >= 800 and grid_to_home <= grid_to_home_ref:
+            return adaptive_charging(max_charging_power, actual_charging_power)
+    else:
+        if 500 <= max_charging_power < 800 and grid_to_home < grid_to_home_ref:
+            return slow_charging(amps_slow)
+        else:
+            return no_charging()
 
 def loop(buffer: float, style: int)-> None:
     """
