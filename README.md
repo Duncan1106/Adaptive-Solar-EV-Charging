@@ -28,8 +28,8 @@ This script allows you to charge your electric vehicle with solar power in an in
   
  ## Usage
    To use the script, simply run it using the command specified above. 
-   The --buffer argument specifies the amount of power that should remain untouched and not be used for EV charging. This power should be available for other home consumers. 
-   The --style argument specifies the style in which the EV should get charged:
+   - The --buffer argument specifies the amount of power that should remain untouched and not be used for EV charging. This power should be available for other home consumers. 
+   - The --style argument specifies the style in which the EV should get charged:
    
    - A more aggressive charging style should result in fewer stops but potentially more power drawn from the grid.
    - A more conservative charging style should result in more stops but nearly no power drawn from the grid.
