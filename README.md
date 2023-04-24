@@ -10,19 +10,19 @@ This script allows you to charge your electric vehicle with solar power in an in
    - An API that provides solar and home energy data
  # Installation
   - Clone the repository using the following command:
-  '''
+  ```
    git clone https://github.com/Duncan1106/ev-charging-script.git
-  '''
+  ```
   - Install the required packages using pip:
-  ''' 
+  ``` 
   pip install -r requirements.txt
-  '''
+  ```
   - Edit the config.py file to include the URL of your API.
 
  # Run the script using the following command:
-  '''
+  ```
    python main.py --buffer <buffer_power> --style <charging_style>
-  '''
+  ```
 Usage
 To use the script, simply run it using the command specified above. The --buffer argument specifies the amount of power that should remain untouched and not be used for EV charging. This power should be available for other home consumers. The --style argument specifies the style in which the EV should get charged. A more aggressive charging style should result in fewer stops but potentially more power drawn from the grid. A more conservative charging style should result in more stops but nearly no power drawn from the grid.
 
