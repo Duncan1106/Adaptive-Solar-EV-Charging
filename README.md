@@ -28,7 +28,6 @@ To use the script, simply run it using the command specified above. The --buffer
 
  # Contributing
   Contributions to this project are welcome. To contribute, follow these steps:
-
     - Fork this repository.
     - Create a new branch.
     - Make your changes.
