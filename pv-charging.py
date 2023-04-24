@@ -1,9 +1,5 @@
-from set_amps import set_amp
-from count_stops import counter
 from status import status_and_sleep
 from get_data import retrieve_values
-from set_chargings import set_charging
-from logger import log_error, log_info
 from check_1_phase import check_1_phase
 from charging_profiles import adaptive_charging, slow_charging, no_charging
 from power_calcultions import calculate_available_power, check_max_charging_power
@@ -82,10 +78,6 @@ def main(buffer_power=200, style=1) -> None:
     Returns:
         None
     """
-
-    # Initialize the counter and last called time
-    counter.count = 0
-    counter.last_called = None
 
     if check_1_phase(True):
         loop(buffer_power, style)
