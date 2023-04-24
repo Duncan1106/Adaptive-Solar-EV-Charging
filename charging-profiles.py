@@ -4,6 +4,10 @@ from count_stops import counter
 from set_chargings import set_charging
 
 
+# Initialize the counter and last called time
+counter.count = 0
+counter.last_called = None
+
 def adaptive_charging(max_charging_power: float, actual_charging_power: float):
     # Define charging steps in amps and power (in watts)
     charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
