@@ -48,5 +48,3 @@ def no_charging(grid_to_home: float):
     log_info(log_status)
     status = f"Grid Power: {round (grid_to_home)}W, Not Charging: 0W"
     return log_status, sleep_time, sleep_str
-
-if __name__ == "__main__":

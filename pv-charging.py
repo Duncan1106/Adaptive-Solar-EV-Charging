@@ -2,7 +2,7 @@ from status import status_and_sleep
 from get_data import retrieve_values
 from check_1_phase import check_1_phase
 from charging_profiles import adaptive_charging, slow_charging, no_charging
-from power_calcultions import calculate_available_power, check_max_charging_power
+from power_calculations import calculate_available_power, check_max_charging_power
 
 def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actual_charging_power: float, charging_style: int):
     """Evaluate whether to start or stop charging the electric vehicle based on the available power.
