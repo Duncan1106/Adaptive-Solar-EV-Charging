@@ -24,7 +24,7 @@ def check_max_charging_power(available_power) -> float:
         float: The maximum charging power that can be safely used (in watts).
     """
 
-    return max(0, available_power)²
+    return max(0, available_power)
 
 if __name__ == '__main__':
     import argparse
