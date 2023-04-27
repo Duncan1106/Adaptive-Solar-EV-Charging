@@ -2,6 +2,7 @@ from logger import log_info
 from set_amps import set_amp
 from count_stops import counter
 from set_chargings import set_charging
+from get_data import get_amp
 
 
 # Initialize the counter and last called time
@@ -24,7 +25,10 @@ def adaptive_charging(max_charging_power: float, actual_charging_power: float):
             sleep_str = "08"
             sleep_time = 8
             break
-    set_amp(charging_amps)
+            
+    if charging_amps != get_amp:
+        set_amp(charging_amps)
+        log_info(f"Charging amps updated to {charging_amps} A")
     log_info(f"Charging power: {actual_charging_power} W \nCharging amps: {charging_amps} A")
     status = f"Available Power: {round (max_charging_power)}W, Amps = {charging_amps}A, Charging: {round (actual_charging_power)}W"
     return status, sleep_time, sleep_str
