@@ -61,8 +61,8 @@ def loop(buffer: float, style: int)-> None:
         max_charging_power = check_max_charging_power(available_power)
 
         # Create status message
-        status = f"Status:\n Grid Power to Home: {grid_to_home}W\n Pv Power: {pv_power}W\n Home consumption: {home_consumption}W\n PV Power Available for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W\n Available charging power: {available_power}W\n Maximum charging power that can be drawn from the PV:  {max_charging_power}W\n"
-
+        #status = f"Status:\n Grid Power to Home: {grid_to_home}W\n Pv Power: {pv_power}W\n Home consumption: {home_consumption}W\n PV Power Available for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W\n Available charging power: {available_power}W\n Maximum charging power that can be drawn from the PV:  {max_charging_power}W\n"
+        status = f"Status:\n Grid Power to Home: {grid_to_home}W; Pv Power: {pv_power}W; Home consumption: {home_consumption}W; PV Power Available for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W; Available charging power: {available_power}W"
         # Check weather to charge or not based on available grid and pv power
         status_text, sleep_time, sleep_string = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style)
 
