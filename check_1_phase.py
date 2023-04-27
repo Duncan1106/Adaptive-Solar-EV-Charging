@@ -26,9 +26,6 @@ def check_1_phase(first_check: bool = False) -> bool:
         fsp = get(check_1_phase_url).json()['fsp']
         if fsp:
             if first_check:
-                # If this is the first check and one phase is being used, print a message and start the charging algorithm
-                print ("Using 1 Phase for Charging, starting pv charging algorithm...")
-
                 # displaying progress bar, only for playing around and why not?!
                 run_progress_bar()
 
