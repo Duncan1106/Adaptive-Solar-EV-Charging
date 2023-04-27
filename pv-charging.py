@@ -89,7 +89,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--buffer', type=int, default=200, help='the power that should be left of the PV power for the home and should not be drawn for ev charging, default is 200W')
-    parser.add_argument('--style', type=int, help='should the algorithm be more aggressive (0) or more conservative (1) in charging the ev aggressive should result in fewer stops, but potencial draw from gird, conservative should stop more often and will try to not draw any power from grid')
+    parser.add_argument('--style', type=int, default=1,help='should the algorithm be more aggressive (0) or more conservative (1) in charging the ev aggressive should result in fewer stops, but potencial draw from gird, conservative should stop more often and will try to not draw any power from grid')
     args = parser.parse_args()
 
     main(args.buffer, args.style)
