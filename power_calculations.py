@@ -28,7 +28,7 @@ def check_max_charging_power(available_power) -> float:
 
 if __name__ == '__main__':
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Calcultaes the available power and the maximum charging power available for ev charging.')
     parser.add_argument('-p', '--pv-power', type=float, help='Pv Power produced by the modules')
     parser.add_argument('-h', '--hone-power', type=float, help='home power consumption ')

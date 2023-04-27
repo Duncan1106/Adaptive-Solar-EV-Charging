@@ -23,6 +23,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--amps', type=int, choices=range(6, 17), help='amp range between 6 and 16 (inclusive)')
     args = parser.parse_args()
-    amps = args.amps
-
-    set_amp(amp
+    set_amp(args.amps)
