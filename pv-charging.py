@@ -1,6 +1,7 @@
 from status import status_and_sleep
 from get_data import retrieve_values
 from check_1_phase import check_1_phase
+from modbus_data import return_data_to_script
 from charging_profiles import adaptive_charging, slow_charging, no_charging
 from power_calculations import calculate_available_power, check_max_charging_power
 
@@ -54,7 +55,8 @@ def loop(buffer: float, style: int)-> None:
     while True:
         # Check for 1 phase usage
         check_1_phase()
-        pv_power, home_consumption, actual_charging_power, grid_to_home = retrieve_values()
+        #pv_power, home_consumption, actual_charging_power, grid_to_home = retrieve_values()
+        pv_power, home_consumption, actual_charging_power, grid_to_home = return_data_to_script()
         available_power = calculate_available_power(pv_power, home_consumption, buffer, actual_charging_power)
         max_charging_power = check_max_charging_power(available_power)
 
@@ -78,7 +80,7 @@ def main(buffer_power=200, style=1) -> None:
     Returns:
         None
     """
-
+    print (f"Starting Pv Surplus EV charging, buffer power: {buffer_power}W, charging style: {'aggressive' if style == 0 else 'conservative'}")
     if check_1_phase(True):
         loop(buffer_power, style)
 
@@ -87,7 +89,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--buffer', type=int, default=200, help='the power that should be left of the PV power for the home and should not be drawn for ev charging, default is 200W')
-    parser.add_argument('--style', type=str, help='should the algorithm be more aggressive (0) or more conservative (1) in charging the ev aggressive should result in fewer stops, but potencial draw from gird, conservative should stop more often and will try to not draw any power from grid')
+    parser.add_argument('--style', type=int, help='should the algorithm be more aggressive (0) or more conservative (1) in charging the ev aggressive should result in fewer stops, but potencial draw from gird, conservative should stop more often and will try to not draw any power from grid')
     args = parser.parse_args()
 
     main(args.buffer, args.style)
