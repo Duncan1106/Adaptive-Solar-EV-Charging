@@ -1,5 +1,5 @@
 from logger import log_error
-from requests import get, json
+from requests import get
 
 def get_solar_and_home_data() -> dict:
     """
@@ -23,13 +23,30 @@ def get_solar_and_home_data() -> dict:
         response.raise_for_status()
         data = response.json()
         return data
-    except requests.exceptions.RequestException as e:
-        log_error(e)
-        return None
     except requests.exceptions.Timeout as e:
         log_error(e)
         return None
     except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
+        log_error(e)
+        return None
+
+def get_amp()
+    try:
+        url = "http://192.168.2.203/api/status?filter=amp"
+        response = get(url)
+        response.raise_for_status()
+        data = response.json()
+        return data['amp']
+    except requests.exceptions.Timeout as e:
+        log_error(e)
+        return None
+    except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
         log_error(e)
         return None
 
@@ -46,7 +63,7 @@ def retrieve_values():
         - grid_to_home: float
     """
     api_data = get_solar_and_home_data() # get the data from api
-    
+
     pv_power = round (api_data[0]['val'], 5)  # in watts
     home_consumption = round (api_data[1]['val'], 5)  # in watts
     actual_charging_power = round (api_data[2]['val'] * 1000 , 5) # in watts

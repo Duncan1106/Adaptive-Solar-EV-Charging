@@ -1,6 +1,6 @@
 import sys ### possible not needed
 from time import sleep
-from requests import get, json
+from requests import get
 from logger import configure_logging
 from user_kill import user_input_kill
 from set_chargings import set_charging
