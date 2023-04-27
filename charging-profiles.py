@@ -25,7 +25,7 @@ def adaptive_charging(max_charging_power: float, actual_charging_power: float):
             sleep_str = "08"
             sleep_time = 8
             break
-            
+
     if charging_amps != get_amp:
         set_amp(charging_amps)
         log_info(f"Charging amps updated to {charging_amps} A")
