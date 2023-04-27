@@ -23,13 +23,13 @@ def get_solar_and_home_data() -> dict:
         response.raise_for_status()
         data = response.json()
         return data
-    except requests.exceptions.RequestException as e:
-        log_error(e)
-        return None
     except requests.exceptions.Timeout as e:
         log_error(e)
         return None
     except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
         log_error(e)
         return None
 
@@ -40,13 +40,13 @@ def get_amp()
         response.raise_for_status()
         data = response.json()
         return data['amp']
-    except requests.exceptions.RequestException as e:
-        log_error(e)
-        return None
     except requests.exceptions.Timeout as e:
         log_error(e)
         return None
     except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
         log_error(e)
         return None
 
