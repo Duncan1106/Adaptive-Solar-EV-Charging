@@ -20,7 +20,6 @@ def counter():
         sleep(120)
     return counter.count
 
-
 if __name__ == '__main__':
     # Initialize the counter and last called time
     counter.count = 0
