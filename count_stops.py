@@ -1,4 +1,5 @@
 from time import sleep, time
+from set_chargings import set_charging
 
 def counter():
     if counter.last_called is not None and time() - counter.last_called > 300:
