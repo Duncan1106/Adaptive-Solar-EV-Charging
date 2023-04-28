@@ -15,11 +15,7 @@ This script allows you to charge your electric vehicle with solar power in an in
    git clone https://github.com/Duncan1106/ev-charging-script.git
   ```
   
-  - Install the required packages using pip:
-  ``` 
-  pip install -r requirements.txt
-  ```
-  - Edit the config.py file to include the URL of your API.
+  - Edit the config.py file to include the URL of your API. (not implemented yet)
 
  ## Run the script using the following command:
   ``` 
