@@ -7,6 +7,11 @@ from set_chargings import set_charging
 from progress_bar import run_progress_bar
 from wait_for_changes import wait_for_amp_changes
 
+######################################################################################################################
+## ToDo:                                                                                                            ##
+##      - add possibility to disable check when script switched to three phases and not the user                    ##
+######################################################################################################################
+
 def check_1_phase(first_check: bool = False) -> bool:
     """Checks if one phase is being used for charging.
 

@@ -57,6 +57,14 @@ def loop(buffer: float, style: int)-> None:
     """
 
     while True:
+
+        ##############################################################################################################################################################################################
+        ## ToDo:                                                                                                                                                                                    ##
+        ##      - possibility to add tibber check and chnage charging style according to the price, either price level: LOW, NORMAL, HIGH or based on the actual price when below a threshold       ##
+        ##      - check tibber price only every hour since they change only every hour                                                                                                              ##
+        ##      - add possibility to disable the check_1_phase() function when script has chnaged to three phase charging                                                                           ##
+        ##############################################################################################################################################################################################
+
         # Check for 1 phase usage
         check_1_phase()
         #pv_power, home_consumption, actual_charging_power, grid_to_home = retrieve_values()
