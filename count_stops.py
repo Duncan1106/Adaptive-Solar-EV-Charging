@@ -11,10 +11,10 @@ def counter():
     counter.last_called = time()  # Update the last called time
 
     # Call different functions based on the number of calls
-    if counter.count == 10:
+    if counter.count == 20:
         print ("Stopped charging 10 times in short time distance, waiting one minute for things to settle down")
         sleep(60)
-    elif counter.count == 20:
+    elif counter.count == 40:
         print ("Stopped charging 20 times in short time distance, waiting 2 minutes for things to settle down")
         set_charging(1)
         sleep(120)
