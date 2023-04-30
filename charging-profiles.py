@@ -14,9 +14,14 @@ def max_charging():
     set_charging(0)
     sleep_time = 30
     set_amp(16)
-    ## possible check for 3 phase charging ???? 
-    ## ToDo - temporaly disable one phase check and allow three phase charging
-    ##      - maybe add counter that counts the times this got triggered and only after a certain amount changes phases, because phase switching takes about 15-30s
+
+    ##########################################################################################################################################################################
+    ## ToDo:                                                                                                                                                                ##
+    ##      - possible check for 3 phase charging ?!?!                                                                                                                      ##
+    ##      - temporaly disable one phase check and allow three phase charging                                                                                              ##
+    ##      - maybe add counter that counts the times this got triggered and only after a certain amount changes phases, because phase switching takes about 15-30s         ##
+    ##########################################################################################################################################################################
+    
     log_status = f"PV Power ({pv_power}W) is larger than Home Consumption ({home_consumption}W) and the charger already charges with max power( {actual_charging_power}W)"
     log_info(log_status)
     return log_status, sleep_time
