@@ -1,5 +1,5 @@
-from logger import log_error
 from requests import get
+from logger import log_error
 
 def get_solar_and_home_data() -> dict:
     """

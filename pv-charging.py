@@ -22,6 +22,7 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
         - sleep_time (int): duration of time the function should sleep for, in seconds
         - sleep_str (str): a string representation of the sleep time, in the format of mm
     """
+
     if charging_style == 0:
         grid_to_home_ref = 2000
         amps_slow = 7
@@ -32,9 +33,11 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
         raise ValueError("The provided charging style is invalid, there are only two style: 0 -> aggressive and 1 -> conservative; default´is conservative")            
     
     if pv_power - home_consumption > 750 and actual_charging_power > 3600:
+        charging_steps = {6 : 4100, 7 : 4700, 8 : 5400, 9 : 6100, 10 : 6800}
         return max_charging(pv_power, home_consumption, actual_charging_power) 
     if max_charging_power >= 800 and grid_to_home <= grid_to_home_ref:
-        return adaptive_charging(max_charging_power, actual_charging_power)
+        charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
+        return adaptive_charging(max_charging_power, actual_charging_power, charging_steps)
     else:
         if 500 <= max_charging_power < 800 and grid_to_home < grid_to_home_ref:
             return slow_charging(amps_slow, grid_to_home, max_charging_power, actual_charging_power)
