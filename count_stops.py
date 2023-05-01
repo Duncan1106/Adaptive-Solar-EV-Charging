@@ -6,7 +6,7 @@ def counter():
         # If it has been more than 5 minutes since the last call, reset the counter
         counter.count = 0
     counter.count += 1  # Increase the counter
-    wait_time = 10 + (counter.count) # Calculate the wait time
+    wait_time = (counter.count)
     sleep(wait_time)  # Wait for the specified time
     counter.last_called = time()  # Update the last called time
 

@@ -9,11 +9,35 @@ from get_data import get_amp
 counter.count = 0
 counter.last_called = None
 
-def max_charging():
+
+############################################################################################################
+##   ToDo:                                                                                                ##
+##         - possible remove and only use adaptive charging when giving the charging_steps as parameter   ##
+############################################################################################################
+
+# def max_adaptive_charging(max_charging_power: float, actual_charging_power: float, charging_steps: dict):
+#     charging_steps = {6 : 4100, 7 : 4700, 8 : 5400, 9 : 6100, 10 : 6800}
+#     charging_amps = 6
+#     for amps, power in charging_steps.items():
+#         if power <= max_charging_power:
+#             charging_amps = amps
+#             sleep_time = 4
+#         else:
+#             sleep_time = 3
+#             break
+#     if charging_amps != get_amp:
+#         set_amp(charging_amps)
+#         log_info(f"Charging amps updated to {charging_amps} A")
+#     set_charging(0)
+#     log_info(f"Charging power: {actual_charging_power} W \nCharging amps: {charging_amps} A")
+#     status = f"Available Power: {round (max_charging_power)}W, Amps = {charging_amps}A, Charging: {round (actual_charging_power)}W"
+#     return status, sleep_time
+
+def max_charging(pv_power, home_consumption, actual_charging_power):
     # set charging to allow
+    set_amp(16)
     set_charging(0)
     sleep_time = 30
-    set_amp(16)
 
     ##########################################################################################################################################################################
     ## ToDo:                                                                                                                                                                ##
@@ -26,13 +50,12 @@ def max_charging():
     log_info(log_status)
     return log_status, sleep_time
 
-def adaptive_charging(max_charging_power: float, actual_charging_power: float):
+def adaptive_charging(max_charging_power: float, actual_charging_power: float, charging_steps):
     # Define charging steps in amps and power (in watts)
     charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
     # set amps to lowest value possible
     charging_amps = 6
     # set charging to allow
-    set_charging(0)
     for amps, power in charging_steps.items():
         if power <= max_charging_power:
             charging_amps = amps
@@ -44,6 +67,7 @@ def adaptive_charging(max_charging_power: float, actual_charging_power: float):
     if charging_amps != get_amp:
         set_amp(charging_amps)
         log_info(f"Charging amps updated to {charging_amps} A")
+    set_charging(0)
     log_info(f"Charging power: {actual_charging_power} W \nCharging amps: {charging_amps} A")
     status = f"Available Power: {round (max_charging_power)}W, Amps = {charging_amps}A, Charging: {round (actual_charging_power)}W"
     return status, sleep_time
