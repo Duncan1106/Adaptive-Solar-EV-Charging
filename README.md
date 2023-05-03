@@ -12,7 +12,7 @@ This script allows you to charge your electric vehicle with solar power in an in
   - Clone the repository using the following command:
   
   ```
-   git clone https://github.com/Duncan1106/ev-charging-script.git
+   git clone https://github.com/Duncan1106/Adaptive-Solar-EV-Charging.git
   ```
   
   - Edit the config.py file to include the URL of your API. (not implemented yet)
