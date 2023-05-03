@@ -2,7 +2,7 @@ from status import status_and_sleep
 from get_data import retrieve_values
 from check_1_phase import check_1_phase
 from modbus_data import return_data_to_script
-from charging_profiles import max_charging, adaptive_charging, slow_charging, no_charging
+from charging_profiles import adaptive_charging, slow_charging, no_charging
 from power_calculations import calculate_available_power, check_max_charging_power
 
 def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actual_charging_power: float, charging_style: int, home_consumption: float, pv_power: float):
@@ -30,14 +30,15 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
         grid_to_home_ref = 800
         amps_slow = 6
     else:
-        raise ValueError("The provided charging style is invalid, there are only two style: 0 -> aggressive and 1 -> conservative; default´is conservative")            
-    
-    if pv_power - home_consumption > 750 and actual_charging_power > 3600:
+        raise ValueError("The provided charging style is invalid, there are only two style: 0 -> aggressive and 1 -> conservative; default´is conservative")
+    if ( max_charging_power > 4200 and actual_charging_power > 3600 ) or ( max_charging_power > 4200 and actual_charging_power < 10 ):
         charging_steps = {6 : 4100, 7 : 4700, 8 : 5400, 9 : 6100, 10 : 6800}
-        return max_charging(pv_power, home_consumption, actual_charging_power) 
+        use_three_phases = True
+        return adaptive_charging(pv_power, home_consumption, actual_charging_power, use_three_phases)
     if max_charging_power >= 800 and grid_to_home <= grid_to_home_ref:
         charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
-        return adaptive_charging(max_charging_power, actual_charging_power, charging_steps)
+        use_three_phases = False
+        return adaptive_charging(max_charging_power, actual_charging_power, charging_steps, use_three_phases)
     else:
         if 500 <= max_charging_power < 800 and grid_to_home < grid_to_home_ref:
             return slow_charging(amps_slow, grid_to_home, max_charging_power, actual_charging_power)
@@ -58,28 +59,29 @@ def loop(buffer: float, style: int)-> None:
 
     Returns: None
     """
+    use_three_phases = False
 
     while True:
-
         ##############################################################################################################################################################################################
         ## ToDo:                                                                                                                                                                                    ##
         ##      - possibility to add tibber check and chnage charging style according to the price, either price level: LOW, NORMAL, HIGH or based on the actual price when below a threshold       ##
         ##      - check tibber price only every hour since they change only every hour                                                                                                              ##
-        ##      - add possibility to disable the check_1_phase() function when script has chnaged to three phase charging                                                                           ##
+        ##      - add possibility to disable the check_1_phase() function when script has changed to three phase charging                                                                           ##
         ##############################################################################################################################################################################################
 
         # Check for 1 phase usage
-        check_1_phase()
+        check_1_phase(False, use_three_phases)
+
         #pv_power, home_consumption, actual_charging_power, grid_to_home = retrieve_values()
         pv_power, home_consumption, actual_charging_power, grid_to_home = return_data_to_script()
         available_power = calculate_available_power(pv_power, home_consumption, buffer, actual_charging_power)
         max_charging_power = check_max_charging_power(available_power)
 
         # Create status message
-        #status = f"Status:\n Grid Power to Home: {grid_to_home}W\n Pv Power: {pv_power}W\n Home consumption: {home_consumption}W\n PV Power Available for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W\n Available charging power: {available_power}W\n Maximum charging power that can be drawn from the PV:  {max_charging_power}W\n"
         status = f"Status:\n Grid Power to Home: {grid_to_home}W; Pv Power: {pv_power}W; Home consumption: {home_consumption}W; PV Power Available for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W; Available charging power: {available_power}W"
-        # Check weather to charge or not based on available grid and pv power
-        status_text, sleep_time = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style, home_consumption, pv_power)
+
+        # Check wether to charge or not based on available grid and pv power
+        status_text, sleep_time, use_three_phases = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style, home_consumption, pv_power)
 
         # Print the status message and wait for specified amount of time
         status_and_sleep(status, sleep_time, status_text)
