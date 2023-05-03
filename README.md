@@ -19,7 +19,7 @@ This script allows you to charge your electric vehicle with solar power in an in
 
  ## Run the script using the following command:
   ``` 
-  python main.py --buffer <buffer_power> --style <charging_style> 
+  python pv-charging.py --buffer <buffer_power> --style <charging_style> 
   ```
   
  ## Usage
