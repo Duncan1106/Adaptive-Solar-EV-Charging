@@ -8,16 +8,18 @@ from progress_bar import run_progress_bar
 from wait_for_changes import wait_for_amp_changes
 
 ######################################################################################################################
-## ToDo:                                                                                                            ##
-##      - add possibility to disable check when script switched to three phases and not the user                    ##
+## ToDo:                                                                                          /   / \           ##
+##      - add possibility to disable check when script switched to three phases and not the user  \ \/  /           ##
 ######################################################################################################################
 
-def check_1_phase(first_check: bool = False) -> bool:
+def check_1_phase(first_check: bool = False, use_three_phases: bool = False) -> bool:
     """Checks if one phase is being used for charging.
 
     Args:
         first_check (bool): Flag to indicate if this is the first check.
             Defaults to False.
+        use_three_phases (bool): Flag to indicate if the systems has enough solar power for three phase charging
+            Default to False.
 
     Returns:
         bool: Returns True if one phase is being used for charging.
@@ -37,7 +39,9 @@ def check_1_phase(first_check: bool = False) -> bool:
                 # configuring logging
                 configure_logging()
             return True
-        if not first_check:
+        if not fsp:
+            if use_three_phases:
+                return True
             # If this is the first check and three phases are being used, wait for one phase to be used
             if wait_for_amp_changes():
                 # If amps have changed three times indicate the user the pv-charging will stop and start charging

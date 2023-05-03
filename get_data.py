@@ -37,6 +37,23 @@ def get_solar_and_home_data() -> dict:
         log_error(e)
         return None
 
+def get_phase():
+    try:
+        url = "http://192.168.2.203/api/status?filter=fsp"
+        response = get(url)
+        response.raise_for_status()
+        data = response.json()
+        return data['fsp']
+    except requests.exceptions.Timeout as e:
+        log_error(e)
+        return None
+    except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
+        log_error(e)
+        return None
+
 def get_amp():
     try:
         url = "http://192.168.2.203/api/status?filter=amp"
