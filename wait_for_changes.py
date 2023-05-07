@@ -3,7 +3,7 @@ from time import sleep, time
 
 def wait_for_amp_changes():
     url = "http://192.168.2.203/api/status?filter=amp"
-    response = .get(url)
+    response = get(url)
     current_value = json()['amp']
     num_changes = 0
     start_time = time()
