@@ -31,14 +31,17 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
         amps_slow = 6
     else:
         raise ValueError("The provided charging style is invalid, there are only two style: 0 -> aggressive and 1 -> conservative; default´is conservative")
-    if ( max_charging_power > 4200 and actual_charging_power > 3600 ) or ( max_charging_power > 4200 and actual_charging_power < 10 ):
-        charging_steps = {6 : 4100, 7 : 4700, 8 : 5400, 9 : 6100, 10 : 6800}
+
+    if ( max_charging_power > 4500 and actual_charging_power > 3600 ) or ( max_charging_power > 4500 and actual_charging_power < 10 ):
+        charging_steps = {6 : 4200, 7 : 4800, 8 : 5400}
         use_three_phases = True
-        return adaptive_charging(pv_power, home_consumption, actual_charging_power, use_three_phases)
+        return adaptive_charging(max_charging_power, actual_charging_power, charging_steps, use_three_phases)
+
     if max_charging_power >= 800 and grid_to_home <= grid_to_home_ref:
         charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
         use_three_phases = False
         return adaptive_charging(max_charging_power, actual_charging_power, charging_steps, use_three_phases)
+
     else:
         if 500 <= max_charging_power < 800 and grid_to_home < grid_to_home_ref:
             return slow_charging(amps_slow, grid_to_home, max_charging_power, actual_charging_power)
@@ -59,6 +62,7 @@ def loop(buffer: float, style: int)-> None:
 
     Returns: None
     """
+    global use_three_phase
     use_three_phases = False
 
     while True:

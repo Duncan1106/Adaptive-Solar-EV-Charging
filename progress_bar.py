@@ -1,9 +1,10 @@
 from time import sleep
+from logger import log_info
 from random import random, randint
 from shutil import get_terminal_size
 
 
-def run_progress_bar(total=100, jump_chance=0.15, sleep_time=0.3, block_char='#', space_char=' ', color=None, no_color=False) -> None:
+def run_progress_bar(total=100, jump_chance=0.21, sleep_time=0.3, block_char='#', space_char=' ', color='\033[32m', no_color=False) -> None:
     """
     Prints a progress bar to the console.
     :param total: the total number of units to be processed.
@@ -24,6 +25,7 @@ def run_progress_bar(total=100, jump_chance=0.15, sleep_time=0.3, block_char='#'
         /_/    \_\ |______/  |______|     \__/        \______|
                 Adaptive Solar EV Charging v.9.0 '''
     print (start)
+    log_info(start)
 
     PROGRESS_JUMP_POINT = 0.3
     PROGRESS_FINISH_POINT = 0.9
@@ -34,7 +36,7 @@ def run_progress_bar(total=100, jump_chance=0.15, sleep_time=0.3, block_char='#'
     PROGRESS_INCREASE_MAX = 8
     TERM_WIDTH, _ = get_terminal_size(fallback=(80, 24))
 
-    progress_bar_width = TERM_WIDTH - 15
+    progress_bar_width = TERM_WIDTH - 16
     block_width = len(block_char)
 
     if color and not no_color:

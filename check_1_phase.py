@@ -1,4 +1,4 @@
-import sys ### possible not needed
+import sys ### possibly not needed
 from time import sleep
 from requests import get
 from logger import configure_logging
@@ -6,11 +6,6 @@ from user_kill import user_input_kill
 from set_chargings import set_charging
 from progress_bar import run_progress_bar
 from wait_for_changes import wait_for_amp_changes
-
-######################################################################################################################
-## ToDo:                                                                                          /   / \           ##
-##      - add possibility to disable check when script switched to three phases and not the user  \ \/  /           ##
-######################################################################################################################
 
 def check_1_phase(first_check: bool = False, use_three_phases: bool = False) -> bool:
     """Checks if one phase is being used for charging.
