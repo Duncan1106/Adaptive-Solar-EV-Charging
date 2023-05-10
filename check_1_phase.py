@@ -26,13 +26,10 @@ def check_1_phase(first_check: bool = False, use_three_phases: bool = False) -> 
     while True:
         # Get the value of fsp from the API
         fsp = get(check_1_phase_url).json()['fsp']
+        if first_check:
+            configure_logging()
+            run_progress_bar()
         if fsp:
-            if first_check:
-                # displaying progress bar, only for playing around and why not?!
-                run_progress_bar()
-
-                # configuring logging
-                configure_logging()
             return True
         if not fsp:
             if use_three_phases:
@@ -45,7 +42,6 @@ def check_1_phase(first_check: bool = False, use_three_phases: bool = False) -> 
             # if amps hasnt chanegd three times, stop charging and wait for one phase to be used
             set_charging(1)
         sleep(30)
-
 
 if __name__ == '__main__':
     import argparse

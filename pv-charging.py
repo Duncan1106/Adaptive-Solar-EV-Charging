@@ -1,11 +1,12 @@
+from logger import log_info
 from status import status_and_sleep
-from get_data import retrieve_values
 from check_1_phase import check_1_phase
 from modbus_data import return_data_to_script
+from get_data import retrieve_values, get_phase
 from charging_profiles import adaptive_charging, slow_charging, no_charging
 from power_calculations import calculate_available_power, check_max_charging_power
 
-def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actual_charging_power: float, charging_style: int, home_consumption: float, pv_power: float):
+def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actual_charging_power: float, charging_style: int, home_consumption: float, pv_power: float, available_power: float):
     """Evaluate whether to start or stop charging the electric vehicle based on the available power.
 
     Args:
@@ -37,18 +38,18 @@ def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actu
         use_three_phases = True
         return adaptive_charging(max_charging_power, actual_charging_power, charging_steps, use_three_phases)
 
-    if max_charging_power >= 800 and grid_to_home <= grid_to_home_ref:
+    if max_charging_power >= 1000 and grid_to_home <= grid_to_home_ref:
         charging_steps = {6 : 1300, 7 : 1600, 8 : 1800, 9 : 2000, 10 : 2300, 11 : 2500, 12 : 2700, 13 : 3000, 14 : 3200, 15 : 3400, 16 : 3700}
         use_three_phases = False
         return adaptive_charging(max_charging_power, actual_charging_power, charging_steps, use_three_phases)
 
     else:
-        if 500 <= max_charging_power < 800 and grid_to_home < grid_to_home_ref:
+        if 750 <= max_charging_power < 1000 and grid_to_home < grid_to_home_ref:
             return slow_charging(amps_slow, grid_to_home, max_charging_power, actual_charging_power)
         else:
-            return no_charging(grid_to_home)
+            return no_charging(available_power, get_phase())
 
-def loop(buffer: float, style: int)-> None:
+def loop(buffer: float, style: int, force: bool = False)-> None:
     """
     This function retrieves solar and home energy data from an API and then calculates available and maximum charging
     power for an electric vehicle. It then uses this information to either allow or prevent charging of the vehicle and
@@ -56,21 +57,20 @@ def loop(buffer: float, style: int)-> None:
     amount of time before running the loop again.
 
     Args:
-    - data_url (str): URL of the API that provides solar and home energy data
     - buffer (float): Buffer power in watts that needs to be left available to prevent power cuts or tripping
-    - steps (dict): Mapping of different charging currents to their corresponding power requirements
+    - style (str): the charging style to be used
+    - force (bool): to ignore or not ignore one phase check on start
 
     Returns: None
     """
-    global use_three_phase
-    use_three_phases = False
+
+    use_three_phases = force
 
     while True:
         ##############################################################################################################################################################################################
         ## ToDo:                                                                                                                                                                                    ##
         ##      - possibility to add tibber check and chnage charging style according to the price, either price level: LOW, NORMAL, HIGH or based on the actual price when below a threshold       ##
         ##      - check tibber price only every hour since they change only every hour                                                                                                              ##
-        ##      - add possibility to disable the check_1_phase() function when script has changed to three phase charging                                                                           ##
         ##############################################################################################################################################################################################
 
         # Check for 1 phase usage
@@ -82,15 +82,15 @@ def loop(buffer: float, style: int)-> None:
         max_charging_power = check_max_charging_power(available_power)
 
         # Create status message
-        status = f"Status:\n Grid Power to Home: {grid_to_home}W; Pv Power: {pv_power}W; Home consumption: {home_consumption}W; PV Power Available for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W; Available charging power: {available_power}W"
+        status = f"Grid to Home: {grid_to_home}W; Pv Power: {pv_power}W; Home consumption: {home_consumption}W; PV Power for Grid: {round(pv_power - home_consumption + actual_charging_power, 3)}W; Available charging power: {available_power}W"
 
         # Check wether to charge or not based on available grid and pv power
-        status_text, sleep_time, use_three_phases = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style, home_consumption, pv_power)
+        status_text, sleep_time, use_three_phases, phase_log, charging_log = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style, home_consumption, pv_power, available_power)
 
         # Print the status message and wait for specified amount of time
-        status_and_sleep(status, sleep_time, status_text)
+        status_and_sleep(status, sleep_time, status_text, phase_log, charging_log)
 
-def main(buffer_power=200, style=1) -> None:
+def main(buffer_power=200, style=1, force=False) -> None:
     """
     The main function that runs the loop for the EV charger.
 
@@ -101,9 +101,13 @@ def main(buffer_power=200, style=1) -> None:
     Returns:
         None
     """
-    print (f"Starting Pv Surplus EV charging, buffer power: {buffer_power}W, charging style: {'aggressive' if style == 0 else 'conservative'}")
-    if check_1_phase(True):
-        loop(buffer_power, style)
+    start = f"\nStarting Pv Surplus EV charging, buffer power: {buffer_power}W, charging style: {'aggressive' if style == 0 else 'conservative'}, force start: {force}\n"
+    print (start)
+    if check_1_phase(True, force):
+        log_info(start)
+        loop(buffer_power, style, force)
+
+global use_three_phases
 
 # check if script is run as a script
 if __name__ == "__main__":
@@ -111,6 +115,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--buffer', type=int, default=200, help='the power that should be left of the PV power for the home and should not be drawn for ev charging, default is 200W')
     parser.add_argument('--style', type=int, default=1,help='should the algorithm be more aggressive (0) or more conservative (1) in charging the ev aggressive should result in fewer stops, but potencial draw from gird, conservative should stop more often and will try to not draw any power from grid')
+    parser.add_argument('--force', type=bool, default=False, help='should the algorithm start wether or not one phase is used')
     args = parser.parse_args()
 
-    main(args.buffer, args.style)
+    main(args.buffer, args.style, args.force)
