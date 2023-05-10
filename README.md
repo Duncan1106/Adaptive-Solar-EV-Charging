@@ -19,8 +19,11 @@ This script allows you to charge your electric vehicle with solar power in an in
 
  ## Run the script using the following command:
   ``` 
-  python3 pv-charging.py --buffer <buffer_power> --style <charging_style> 
+  python3 pv-charging.py --buffer <buffer_power> --style <charging_style> --force <boolean> 
   ```
+  Defaults: - buffer = 200W, 
+            - charging style is conservative, 
+            - force = False
   
  ## Usage
    To use the script, simply run it using the command specified above. 
