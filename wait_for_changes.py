@@ -1,4 +1,4 @@
-from requests import get, json
+from requests import get
 from time import sleep, time
 
 def wait_for_amp_changes():
@@ -18,7 +18,7 @@ def wait_for_amp_changes():
             print(f"Value changed ({num_changes}/3): {new_value}")
             current_value = new_value
 
-    if num_changes ´== 3:
+    if num_changes == 3:
         return True
     else:
         return False

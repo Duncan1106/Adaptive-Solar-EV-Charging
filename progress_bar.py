@@ -15,7 +15,6 @@ def run_progress_bar(total=100, jump_chance=0.21, sleep_time=0.3, block_char='#'
     :param color: the color to use for the progress bar (e.g., "red", "green", "blue", etc.).
     :param no_color: disable color output.
     """
-
     start = '''
                      _____    ______  __        __     ______
             /\      / ____|  |  ____| \ \      / /    / _____|
@@ -23,9 +22,9 @@ def run_progress_bar(total=100, jump_chance=0.21, sleep_time=0.3, block_char='#'
           / /\ \    \___ \   |  __|     \ \  / /    |  |
          / ____ \   ____) |  | |____     \ \/ /      \  \____
         /_/    \_\ |______/  |______|     \__/        \______|
-                Adaptive Solar EV Charging v.9.0 '''
+                Adaptive Solar EV Charging v.9.0 \n'''
     print (start)
-    log_info(start)
+    log_info (start)
 
     PROGRESS_JUMP_POINT = 0.3
     PROGRESS_FINISH_POINT = 0.9
