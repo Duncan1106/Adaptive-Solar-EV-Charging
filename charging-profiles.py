@@ -1,14 +1,9 @@
 from time import sleep
 from logger import log_info
 from set_amps import set_amp
-from count_stops import stops_counter
 from set_phases import set_phase
 from set_chargings import set_charging
 from get_data import get_amp, get_phase
-
-# Initialize the counter and last called time
-stops_counter.count = 0
-stops_counter.last_called = None
 
 def adaptive_charging(max_charging_power: float, actual_charging_power: float, charging_steps: dict, use_three_phases: bool):
     # set amps to lowest value possible
@@ -27,10 +22,9 @@ def adaptive_charging(max_charging_power: float, actual_charging_power: float, c
         else:
             sleep_time = 5
             break
-
-    if charging_amps != get_amp():
-        set_amp(charging_amps)
-        log_info(f"Charging amps updated to {charging_amps} A")
+        amp_log = set_amp(charging_amps)
+        if amp_log not None:
+            log_info(amp_log)
 
     # allow charging
     log_charging = set_charging(0)
@@ -47,16 +41,16 @@ def slow_charging(amps: int, grid_to_home: float, max_charging_power: float, act
     log_status = f"Available Power: {round (max_charging_power)}W | Setting to {amps}A to draw not too much power from grid"
     log_info(log_status)
     status = f"Grid Power: {round (grid_to_home)}W, PV Power: {round (max_charging_power)} | Amps = {amps}A, Charging: {round (actual_charging_power)}W"
-    return log_status, sleep_time, False, log, log_charging
+    return status, sleep_time, False, log, log_charging
 
-def no_charging(grid_to_home: float, fsp: bool, available_power: float):
+def no_charging(available_power: float, fsp: bool):
     if not fsp:
         log = set_phase(1)
     else:
-        log = ''
+        log = None
     sleep_time = 3
     log_charging = set_charging(1)
-    log_status = f"Too little power is available: {available_power - 200 if available_power < 0 else available_power}W"
+    log_status = f"Too little power is available: {available_power + 200 if available_power < 0 else available_power}W"
     log_info(log_status)
     status = f"Available Power: {available_power}W, Not Charging: 0W"
-    return log_status, sleep_time, False, log, log_charging
+    return status, sleep_time, False, log, log_charging

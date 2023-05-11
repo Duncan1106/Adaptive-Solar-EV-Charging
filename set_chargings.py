@@ -14,9 +14,9 @@ def set_charging(s: int) -> bool:
     Returns:
         str: .
     """
-    print (get_charging())
+    #print (get_charging())
     if get_charging() == s:
-        return ""
+        return None
     else:
         set_charging_url = "http://192.168.2.203/api/set?frc="
         get(set_charging_url + str(s))

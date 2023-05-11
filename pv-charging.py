@@ -1,10 +1,22 @@
 from logger import log_info
 from status import status_and_sleep
+from count_stops import stops_counter
 from check_1_phase import check_1_phase
+from count_phase_changes import phase_counter
 from modbus_data import return_data_to_script
 from get_data import retrieve_values, get_phase
 from charging_profiles import adaptive_charging, slow_charging, no_charging
 from power_calculations import calculate_available_power, check_max_charging_power
+
+# global indicator for three phase charging
+global use_three_phases
+
+# Initialize the counter and last called time
+stops_counter.count = 0
+stops_counter.last_called = None
+
+phase_counter.count = 0
+phase_counter.last_called = None
 
 def evaluate_charging_start(grid_to_home: float, max_charging_power: float, actual_charging_power: float, charging_style: int, home_consumption: float, pv_power: float, available_power: float):
     """Evaluate whether to start or stop charging the electric vehicle based on the available power.
@@ -69,7 +81,7 @@ def loop(buffer: float, style: int, force: bool = False)-> None:
     while True:
         ##############################################################################################################################################################################################
         ## ToDo:                                                                                                                                                                                    ##
-        ##      - possibility to add tibber check and chnage charging style according to the price, either price level: LOW, NORMAL, HIGH or based on the actual price when below a threshold       ##
+        ##      - add tibber check and chnage charging style according to the price, either price level: VERY_CHEAP, CHEAP, NORMAL, EXPENSIVE, VERY_EXPENSIVE or based on the actual price when below a threshold       ##
         ##      - check tibber price only every hour since they change only every hour                                                                                                              ##
         ##############################################################################################################################################################################################
 
@@ -87,6 +99,11 @@ def loop(buffer: float, style: int, force: bool = False)-> None:
         # Check wether to charge or not based on available grid and pv power
         status_text, sleep_time, use_three_phases, phase_log, charging_log = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style, home_consumption, pv_power, available_power)
 
+        #Count phase changes and charging stops
+        if phase_log not None:
+          phase_counter()
+        if charging_log == "Stopping Charging\n":
+          stops_counter()
         # Print the status message and wait for specified amount of time
         status_and_sleep(status, sleep_time, status_text, phase_log, charging_log)
 
@@ -106,8 +123,6 @@ def main(buffer_power=200, style=1, force=False) -> None:
     if check_1_phase(True, force):
         log_info(start)
         loop(buffer_power, style, force)
-
-global use_three_phases
 
 # check if script is run as a script
 if __name__ == "__main__":

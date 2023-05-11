@@ -19,7 +19,7 @@ def set_phase(s: int) -> bool:
     phase = get_phase()
 
     if phase and s == 1:
-        return ""
+        return None
     elif phase and s == 2:
         phase_counter()
         get(set_phase_url + str(s))
@@ -31,7 +31,7 @@ def set_phase(s: int) -> bool:
         sleep (20)
         return "\n Setting to 1 phase \n"
     elif not phase and s == 2:
-        return ""
+        return None
     # r = get(set_phase_url + str(s))
     # sleep (20)
     # return r.status_code == 200
