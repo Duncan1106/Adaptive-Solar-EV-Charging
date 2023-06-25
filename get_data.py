@@ -1,5 +1,5 @@
-from requests import get
 from logger import log_error
+from requests import get
 
 def get_solar_and_home_data() -> dict:
     """
@@ -27,40 +27,6 @@ def get_solar_and_home_data() -> dict:
         response.raise_for_status()
         data_car = response.json()
         return data_api, data_car
-    except requests.exceptions.Timeout as e:
-        log_error(e)
-        return None
-    except requests.exceptions.HTTPError as e:
-        log_error(e)
-        return None
-    except requests.exceptions.RequestException as e:
-        log_error(e)
-        return None
-
-def get_phase():
-    try:
-        url = "http://192.168.2.203/api/status?filter=fsp"
-        response = get(url)
-        response.raise_for_status()
-        data = response.json()
-        return data['fsp']
-    except requests.exceptions.Timeout as e:
-        log_error(e)
-        return None
-    except requests.exceptions.HTTPError as e:
-        log_error(e)
-        return None
-    except requests.exceptions.RequestException as e:
-        log_error(e)
-        return None
-
-def get_charging():
-    try:
-        url = "http://192.168.2.203/api/status?filter=frc"
-        response = get(url)
-        response.raise_for_status()
-        data = response.json()
-        return data['frc']
     except requests.exceptions.Timeout as e:
         log_error(e)
         return None

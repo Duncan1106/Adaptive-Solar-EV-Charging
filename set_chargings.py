@@ -1,35 +1,22 @@
-from requests import get
-from get_data import get_charging
-from count_stops import stops_counter 
-
-stops_counter.count = 0
-stops_counter.last_called = None
+import requests
 
 def set_charging(s: int) -> bool:
     """Send a GET request to start or stop charging the EV.
 
     Args:
-        s (int): The status to set for charging. 0 to start charging, 1 to stop charging.
+        s (str): The status to set for charging. 0 to start charging, 1 to stop charging.
 
     Returns:
-        str: .
+        bool: True if the GET request was successful and the status code is 200, False otherwise.
     """
-    #print (get_charging())
-    if get_charging() == s:
-        return None
-    else:
-        set_charging_url = "http://192.168.2.203/api/set?frc="
-        get(set_charging_url + str(s))
-        if s == 1:
-            stops_counter()
-            return "Stopping Charging\n"
-        else:
-            return "Starting Charging\n"
+    set_charging_url = "http://192.168.2.203/api/set?frc="
+    r = requests.get(set_charging_url + str(s))
+    return r.status_code == 200
 
 # check if script is run as a script
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--set', type=int, help='The status to set for charging. 0 to start charging, 1 to stop charging')
+    parser.add_argument('--s', type=int, help='The status to set for charging. 0 to start charging, 1 to stop charging')
     args = parser.parse_args()
-    print (set_charging(args.set))
+    set_charging(args.set)

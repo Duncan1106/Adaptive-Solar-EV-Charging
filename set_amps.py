@@ -1,5 +1,4 @@
-from requests import get
-from get_data import get_amp
+import requests
 
 def set_amp(amps: int) -> bool:
     """
@@ -14,11 +13,9 @@ def set_amp(amps: int) -> bool:
     if amps < 6 or amps > 16:
         raise ValueError("Desired amperage must be between 6 and 16")
         return None
-    if amps != get_amp():
-        set_amps_url = "http://192.168.2.203/api/set?amp="
-        get(set_amps_url + str(amps))
-        return f"Charging amps updated to {amps} A"
-    return None
+    set_amps_url = "http://192.168.2.203/api/set?amp="
+    r = requests.get(set_amps_url + str(amps))
+    return r.status_code == 200
 
 # check if script is run as a script
 if __name__ == "__main__":
@@ -26,4 +23,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--amps', type=int, choices=range(6, 17), help='amp range between 6 and 16 (inclusive)')
     args = parser.parse_args()
-    set_amp(args.amps)
+    amps = args.amps
+
+    set_amp(amps)
