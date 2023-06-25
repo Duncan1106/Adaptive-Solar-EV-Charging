@@ -24,7 +24,6 @@ This script allows you to charge your electric vehicle with solar power in an in
  Defaults:
    - buffer = 200W,
    - charging style = conservative, 
-   - force = False
  
 
   
