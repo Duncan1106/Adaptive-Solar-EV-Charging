@@ -1,7 +1,7 @@
 from logger import log_info
+from get_data import get_amp
 from set_amps import set_amp
 from set_chargings import set_charging
-from get_data import get_amp
 
 def adaptive_charging(max_charging_power: float, actual_charging_power: float):
     # Define charging steps in amps and power (in watts)
