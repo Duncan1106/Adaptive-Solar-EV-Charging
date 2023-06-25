@@ -16,9 +16,9 @@ def status_and_sleep(status_data: str, sleep_time: int, status: str, phase_log: 
     - None
     """
     # Wait for x seconds before running the loop again
-    if phase_log != '':
+    if phase_log != None:
         log_info (phase_log)
-    if charging_log != '':
+    if charging_log != None:
         log_info (charging_log)
     log_info (status_data)
     print(f"Sleeping for {str(sleep_time)} seconds | {status}")

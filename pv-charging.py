@@ -100,10 +100,11 @@ def loop(buffer: float, style: int, force: bool = False)-> None:
         status_text, sleep_time, use_three_phases, phase_log, charging_log = evaluate_charging_start(grid_to_home, max_charging_power, actual_charging_power, style, home_consumption, pv_power, available_power)
 
         #Count phase changes and charging stops
-        if phase_log not None:
+        if phase_log != None:
           phase_counter()
         if charging_log == "Stopping Charging\n":
           stops_counter()
+
         # Print the status message and wait for specified amount of time
         status_and_sleep(status, sleep_time, status_text, phase_log, charging_log)
 
