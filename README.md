@@ -1,4 +1,4 @@
-# Adaptive-Solar-EV-Charging
+# Adaptive-Solar-EV-Charging-Control
 
 This script allows you to charge your electric vehicle with solar power in an intelligent way that maximizes your use of clean energy. It retrieves solar and home energy data from an API and then calculates the available and maximum charging power for an electric vehicle. It then uses this information to either allow or prevent charging of the vehicle and sets the appropriate charging current.
 
