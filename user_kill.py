@@ -1,7 +1,6 @@
 from time import sleep
 from set_amps import set_amp
 
-
 # user input signal that indicates script wont interrupt anymore
 def user_input_kill() -> None:
     """
