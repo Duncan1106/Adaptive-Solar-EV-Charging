@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, date
+import datetime
 
 def configure_logging(log_level: str = 'INFO'):
     """
@@ -9,8 +9,8 @@ def configure_logging(log_level: str = 'INFO'):
         log_level (str): The level of logging to use. The options are 'DEBUG', 'INFO',
         'WARNING', 'ERROR', and 'CRITICAL'. The default is 'INFO'.
     """
-    logging.basicConfig(filename=f"charging-data_{date.today().strftime('%d-%m-%Y')}.log", level=log_level,
-                        format='%(asctime)s %(levelname)s %(message)s')
+    logging.basicConfig(filename=f"charging-data_{datetime.date.today().strftime('%d-%m-%Y')}.log", level=log_level, format='%(asctime)s %(levelname)s %(message)s')
+    #logging.basicConfig(level=log_level, format='%(asctime)s %(levelname)s %(message)s')
 
 def log_error(message: Exception) -> None:
     """
@@ -35,3 +35,4 @@ def log_info(message: str):
         None
     """
     logging.info(message)
+
