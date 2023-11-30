@@ -1,5 +1,38 @@
-from requests import get
 from logger import log_error
+from requests import get
+
+def get_chip_id():
+    try:
+        url = "http://192.168.2.203/api/status?filter=trx"
+        response = get(url, timeout=10)
+        data = response.json()
+        return (data['trx'])
+    except requests.exceptions.Timeout as e:
+        log_error(e)
+        return None
+    except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
+        log_error(e)
+        return None
+
+def get_charged_energy():
+    try:
+        url = "http://192.168.2.203/api/status?filter=wh"
+        response = get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        return (data['wh'] / 1000)
+    except requests.exceptions.Timeout as e:
+        log_error(e)
+        return None
+    except requests.exceptions.HTTPError as e:
+        log_error(e)
+        return None
+    except requests.exceptions.RequestException as e:
+        log_error(e)
+        return None
 
 def get_solar_and_home_data() -> dict:
     """
@@ -27,23 +60,6 @@ def get_solar_and_home_data() -> dict:
         response.raise_for_status()
         data_car = response.json()
         return data_api, data_car
-    except requests.exceptions.Timeout as e:
-        log_error(e)
-        return None
-    except requests.exceptions.HTTPError as e:
-        log_error(e)
-        return None
-    except requests.exceptions.RequestException as e:
-        log_error(e)
-        return None
-
-def get_phase():
-    try:
-        url = "http://192.168.2.203/api/status?filter=fsp"
-        response = get(url)
-        response.raise_for_status()
-        data = response.json()
-        return data['fsp']
     except requests.exceptions.Timeout as e:
         log_error(e)
         return None
@@ -91,6 +107,6 @@ def retrieve_values():
     grid_to_home = round (api_data[3]['val'] ,5) # in watts
     return pv_power, home_consumption, actual_charging_power, grid_to_home
 
-
 if __name__ == '__main__':
     retrieve_values()
+    print (get_charged_energy())
