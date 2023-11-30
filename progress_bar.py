@@ -4,7 +4,7 @@ from random import random, randint
 from shutil import get_terminal_size
 
 
-def run_progress_bar(total=100, jump_chance=0.21, sleep_time=0.3, block_char='#', space_char=' ', color='\033[32m', no_color=False) -> None:
+def run_progress_bar(total=100, jump_chance=0.15, sleep_time=0.3, block_char='#', space_char=' ', color='\033[32m', no_color=False) -> None:
     """
     Prints a progress bar to the console.
     :param total: the total number of units to be processed.
@@ -16,16 +16,16 @@ def run_progress_bar(total=100, jump_chance=0.21, sleep_time=0.3, block_char='#'
     :param no_color: disable color output.
     """
 
-    start = '''
-                     _____    ______  __        __     ______
-            /\      / ____|  |  ____| \ \      / /    / _____|
-           /  \    | (___    | |__     \ \    / /    / /
-          / /\ \    \___ \   |  __|     \ \  / /    |  |
-         / ____ \   ____) |  | |____     \ \/ /      \  \____
-        /_/    \_\ |______/  |______|     \__/        \______|
-                Adaptive Solar EV Charging v.9.0 '''
+    start = """     __        _____   __      __   _____      ____     ____   
+    /  \      |  ___|  \ \    / /  / ____|    / ___|   / ___|  
+   / _  \     | |_      \ \  / /   \ \____   | |      | |      
+  / /__\ \    |  _|      \ \/ /     \___  \  | |      | |      
+ / ______ \   | |___      \  /      ____/ /  | |___   | |___   
+/_/      \_\  |_____|      \/      |_____/    \____|   \____|  
+by Duncan1106                                           v.8.0"""
+
     print (start)
-    log_info(start)
+    log_info ("\n" + start)
 
     PROGRESS_JUMP_POINT = 0.3
     PROGRESS_FINISH_POINT = 0.9
