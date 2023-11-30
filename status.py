@@ -1,7 +1,7 @@
 from time import sleep
 from logger import log_info
 
-def status_and_sleep(status_data: str, sleep_time: int, status: str) -> None:
+def status_and_sleep(status_data: str, sleep_str: str, sleep_time: int, status: str) -> None:
     """
     Log the current status, print the sleep duration, and then sleep for the given time.
 
@@ -16,5 +16,5 @@ def status_and_sleep(status_data: str, sleep_time: int, status: str) -> None:
     """
     # Wait for x seconds before running the loop again
     log_info(status_data)
-    print(f"Sleeping for {str(sleep_time)} seconds | {status}")
+    print(f"Sleeping for {sleep_str} seconds | {status}")
     sleep(sleep_time)
