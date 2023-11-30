@@ -67,8 +67,6 @@ class kostal_modbusquery:
         self.Adr575.append("S16")
         self.Adr575.append(0)
 
-
-
     #-----------------------------------------
     # Routine to read a string from one address with 8 registers
     def ReadStr8(self,myadr_dec):
@@ -151,6 +149,12 @@ def get_charging_power():
         response.raise_for_status()
         return response.json()['nrg'][11]
 
+def rdtn25(num):
+    # Find the remainder when divided by 25
+    remainder = num % 25
+    # Subtract the remainder from the original number to round down
+    return num - remainder
+
 def return_data_to_script():
         KostalVal = return_data()
         home_consumption = round(KostalVal['Home own consumption from grid'] + KostalVal['Home own consumption from PV'],2)
@@ -160,17 +164,21 @@ def return_data_to_script():
         return pv_power, home_consumption, actual_charging_power, grid_to_home
 
 if __name__ == "__main__":
-        print (return_data_to_script())
+        #print (return_data_to_script())
         print ("\n")
         while True:
                 KostalVal = return_data()
+                goe_power = get_charging_power()
                 total_home_consumption = round((KostalVal['Home own consumption from grid'] + KostalVal['Home own consumption from PV']),2)
                 power_to_from_grid = round(KostalVal['Inverter Generation Power (actual)'] - total_home_consumption,2)
+                pv_power = KostalVal['Inverter Generation Power (actual)']
                 if power_to_from_grid > 0:
-                        PowertoGridStr = "+" + str(power_to_from_grid)
+                        PowertoGridStr = " + " + str(power_to_from_grid)
                 else:
-                        PowertoGridStr = str(power_to_from_grid)
-                print("\033[2A\033[K", end='')
-                print ("Power from (-) / to (+) grid: ", PowertoGridStr)
-                print ("Total current Home consumption is: ", total_home_consumption)
-                sleep(.5)
+                        PowertoGridStr = " - " + str(power_to_from_grid * -1)
+                print ("\033[4A\033[K", end='')
+                print ("PV Power:", pv_power, "W     ")
+                print ("Power from (-) / to (+) grid:", PowertoGridStr, "W     ")
+                print ("Total current Home consumption is:", total_home_consumption, "W     ")
+                print ("Go-eCharger Power:", goe_power, "W      ")
+                sleep(.25)
